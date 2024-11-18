@@ -1,0 +1,10 @@
+desktop.ini
+.editorconfig
+
+*.vcxproj*
+*.sln
+.vs/
+.vscode/
+x64/
+andgui/
+examples/

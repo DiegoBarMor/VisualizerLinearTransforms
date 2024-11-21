@@ -88,11 +88,11 @@ void OpenGLCube::init_texture() {
     texture = GLuint();
     glGenTextures(1, &texture);
 
-    image.loadFromFile("cats.png");
+    image.loadFromFile("assets/cats.png");
     glActiveTexture(GL_TEXTURE0); // specifies which texture unit a texture object is bound to when glBindTexture is called
     glBindTexture(GL_TEXTURE_2D, texture);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.getSize().x, image.getSize().y, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.getPixelsPtr());
-    glUniform1i(glGetUniformLocation(shaderProgram, "texKitten"), 0);
+    glUniform1i(glGetUniformLocation(shaderProgram, "texCats"), 0);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -156,20 +156,21 @@ void OpenGLCube::handle_events() {
 }
 
 void OpenGLCube::update() {
-    anglex += dx;
-    angley += dy;
-    anglez += dz;
-
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // to fix display of the cube
 
-    float time = clock.getElapsedTime().asSeconds();
-
     // MODEL TRANSFORMATION
+    if (mode == CubeMode::AUTO) {
+        anglez += delta_angle;
+    } 
+    else if (mode == CubeMode::MANUAL) {
+        anglex += dx;
+        angley += dy;
+        anglez += dz;
+    }
     model = glm::rotate(identity, anglex, xPivot);
     model = glm::rotate(model, angley, yPivot);
     model = glm::rotate(model, anglez, zPivot);
-    //model = glm::rotate(identity, time * glm::radians(45.0f), zPivot);
     glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(model));
 
     // VIEW TRANSFORMATION

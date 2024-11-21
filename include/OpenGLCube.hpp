@@ -8,12 +8,18 @@
 
 class OpenGLCube {
 public:
+    enum class CubeMode { AUTO, MANUAL, MATRICES };
+
     OpenGLCube(sf::Window &window);
     ~OpenGLCube();
 
-    bool is_running() { return running; }
     void handle_events();
     void update();
+
+    bool is_running() { return running; }
+    void set_mode(CubeMode mode) { this->mode = mode; }
+    sf::Window &get_window() { return window; }
+    void reset() { anglex = angley = anglez = 0.0f; }
 
 private:
     void init_vertex_input();
@@ -65,11 +71,11 @@ private:
     glm::mat4 identity = glm::mat4(1.0f), model, view, proj;
     GLint uniTrans, uniView, uniProj;
 
-    sf::Clock clock;
     bool running = true;
+    CubeMode mode = CubeMode::AUTO;
     float dx = 0.0f, dy = 0.0f, dz = 0.0f;
     float anglex = 0.0f, angley = 0.0f, anglez = 0.0f;
-    float delta_angle = 0.001f;
+    float delta_angle = 0.01f;
 
     // VERTEX SHADER. mandatory output: final vertex position in device coordinates and any data the fragment shader requires
     const char* vertexSource = R"glsl(
@@ -103,12 +109,12 @@ private:
 
         out vec4 outColor;
 
-        uniform sampler2D texKitten;
+        uniform sampler2D texCats;
 
         void main()
         {
             outColor = vec4(Color, 1.0);
-            outColor = texture(texKitten, Texcoord) * vec4(Color, 1.0);
+            outColor = texture(texCats, Texcoord) * vec4(Color, 1.0);
         }
     )glsl";
 };

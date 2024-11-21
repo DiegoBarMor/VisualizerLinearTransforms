@@ -18,8 +18,8 @@ int main() {
     settings.minorVersion = 2;
     settings.attributeFlags = sf::ContextSettings::Core;
 
-    sf::Window window_cube(sf::VideoMode(800, 600), "OpenGL Cube", sf::Style::Close, settings);
     sf::RenderWindow window_gui(sf::VideoMode(800, 600), "Cube Status", sf::Style::Close);
+    sf::Window window_cube(sf::VideoMode(800, 600), "OpenGL Cube", sf::Style::Close, settings);
     window_gui.setPosition(sf::Vector2i(0, 0));
     window_cube.setPosition(sf::Vector2i(800, 0));
 
@@ -51,7 +51,8 @@ int main() {
         return true;
     });
     if (btn_reset) btn_reset->link_on_mouse_release([&cube](sf::Event event){ 
-        cube.reset(); 
+        cube.reset();
+        cube.get_window().requestFocus();
         return true;
     });
 

@@ -1,5 +1,5 @@
 col (p=20; s=20) {
-    text(w=0.8; t="PLACEHOLDER"; bg=64,64,64)
+    custom_widget(w=0.8; bg=64,64,64; fs = 50)
     row(w=0.2; s=10) {
         rbn(id="rbn_aut") text(w=3; t="automatic"; fs=25)
         rbn(id="rbn_man") text(w=3; t="manual"; fs=25)

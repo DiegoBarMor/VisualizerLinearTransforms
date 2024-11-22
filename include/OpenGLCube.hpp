@@ -8,7 +8,7 @@
 
 class OpenGLCube {
 public:
-    enum class CubeMode { AUTO, MANUAL, MATRICES };
+    enum class CubeMode { AUTO, MANUAL, MATRIX };
 
     OpenGLCube(sf::Window &window);
     ~OpenGLCube();
@@ -20,7 +20,7 @@ public:
     void set_mode(CubeMode mode) { this->mode = mode; }
     sf::Window &get_window() { return window; }
     glm::mat4 get_model() { return model; }
-    void reset() { anglex = angley = anglez = 0.0f; }
+    void reset_model() { model = glm::mat4(1.0f); }
 
 private:
     void init_vertex_input();
@@ -69,18 +69,17 @@ private:
         xPivot = glm::vec3(1.0f, 0.0f, 0.0f),
         yPivot = glm::vec3(0.0f, 1.0f, 0.0f),
         zPivot = glm::vec3(0.0f, 0.0f, 1.0f);
-    glm::mat4 identity = glm::mat4(1.0f), model, view, proj;
+    glm::mat4 model, view, proj;
     GLint uniTrans, uniView, uniProj;
 
     bool running = true;
     CubeMode mode = CubeMode::AUTO;
     float dx = 0.0f, dy = 0.0f, dz = 0.0f;
-    float anglex = 0.0f, angley = 0.0f, anglez = 0.0f;
     float delta_angle = 0.01f;
-    float ratio_perspective = 1.0f;
-    // float ratio_perspective = 800.0f / 600.0f;
+    float ratio_perspective;
+    unsigned int animation_frames = 240;
+    unsigned int animation_counter = 0;
     
-
     // VERTEX SHADER. mandatory output: final vertex position in device coordinates and any data the fragment shader requires
     const char* vertexSource = R"glsl(
         #version 150 core

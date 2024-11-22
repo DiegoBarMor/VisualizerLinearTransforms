@@ -1,0 +1,14 @@
+row {
+    col(p=20; s=20) {
+        row { rbn(id="rbn_aut") text(w=3; t="automatic"; fs=25) }
+        row { rbn(id="rbn_man") text(w=3; t="keyboard"; fs=25) }
+        row { rbn(id="rbn_mat") text(w=3; t="matrix"; fs=25) }
+    }
+    col(p=20; s=20) {
+        btt(id="btt_reset"; w=0.67; bg=100,0,0; t="RESET CUBE")
+        row(w=0.33; s=20) {
+            btt(id="btt_go"; w = 0.7; bg=0,100,0; t="GO")
+            btt(id="btt_clear"; w=0.7; bg=100,0,0; t="CLEAR")
+        }
+    }
+}

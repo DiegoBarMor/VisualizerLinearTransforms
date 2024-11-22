@@ -9,6 +9,7 @@ OpenGLCube::OpenGLCube(sf::Window &window) : window(window) {
     init_shaders();
     init_texture();
     init_transformations();
+    ratio_perspective = (float)window.getSize().x / (float)window.getSize().y;
 }
 
 OpenGLCube::~OpenGLCube() {
@@ -106,6 +107,7 @@ void OpenGLCube::init_texture() {
 }
 
 void OpenGLCube::init_transformations() {
+    reset_model();
     uniTrans = glGetUniformLocation(shaderProgram, "model");
     uniView = glGetUniformLocation(shaderProgram, "view");
     uniProj = glGetUniformLocation(shaderProgram, "proj");
@@ -161,16 +163,16 @@ void OpenGLCube::update() {
 
     // MODEL TRANSFORMATION
     if (mode == CubeMode::AUTO) {
-        anglez += delta_angle;
+        model = glm::rotate(model, delta_angle, zPivot);
     } 
     else if (mode == CubeMode::MANUAL) {
-        anglex += dx;
-        angley += dy;
-        anglez += dz;
+        model = glm::rotate(model, dx, xPivot);
+        model = glm::rotate(model, dy, yPivot);
+        model = glm::rotate(model, dz, zPivot);
     }
-    model = glm::rotate(identity, anglex, xPivot);
-    model = glm::rotate(model, angley, yPivot);
-    model = glm::rotate(model, anglez, zPivot);
+    else if (mode == CubeMode::MATRIX) {
+
+    }
     glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(model));
 
     // VIEW TRANSFORMATION

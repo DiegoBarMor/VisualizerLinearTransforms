@@ -18,25 +18,31 @@ int main() {
     settings.minorVersion = 2;
     settings.attributeFlags = sf::ContextSettings::Core;
 
-    sf::RenderWindow window_gui(sf::VideoMode(800, 600), "Cube Status", sf::Style::Close);
+    sf::RenderWindow window_status(sf::VideoMode(1000, 400), "Cube Status", sf::Style::Close);
+    sf::RenderWindow window_input(sf::VideoMode(600, 400), "Matrix Input", sf::Style::Close);
     sf::Window window_cube(sf::VideoMode(600, 600), "OpenGL Cube", sf::Style::Close, settings);
-    window_gui.setPosition(sf::Vector2i(0, 0));
-    window_cube.setPosition(sf::Vector2i(800, 0));
+    window_status.setPosition(sf::Vector2i(0, 0));
+    window_input.setPosition(sf::Vector2i(0, 450));
+    window_cube.setPosition(sf::Vector2i(1000, 0));
 
-    window_gui.setFramerateLimit(120);
+    window_status.setFramerateLimit(120);
+    window_input.setFramerateLimit(120);
     window_cube.setFramerateLimit(120);
 
-    ManagerImpl gui = ManagerImpl(window_gui);
-    gui.setup("assets/cube_status.ndg");
+    ManagerImpl gui_status = ManagerImpl(window_status);
+    gui_status.setup("assets/cube_status.ndg");
+
+    ManagerImpl gui_input = ManagerImpl(window_input);
+    gui_input.setup("assets/matrix_input.ndg");
 
     OpenGLCube cube = OpenGLCube(window_cube);
 
     ////// Link callbacks ///////////////////////////////////////////////////////
-    nd::Widget* rbn_aut = gui.get_widget("rbn_aut");
-    nd::Widget* rbn_man = gui.get_widget("rbn_man");
-    nd::Widget* rbn_mat = gui.get_widget("rbn_mat");
-    nd::Widget* btn_reset = gui.get_widget("btt_reset");
-    CustomWidget* visualize_mat = (CustomWidget*)gui.get_widget("visualize_mat");
+    nd::Widget* rbn_aut = gui_status.get_widget("rbn_aut");
+    nd::Widget* rbn_man = gui_status.get_widget("rbn_man");
+    nd::Widget* rbn_mat = gui_status.get_widget("rbn_mat");
+    nd::Widget* btn_reset = gui_status.get_widget("btt_reset");
+    CubeStatus* visualize_mat = (CubeStatus*)gui_status.get_widget("visualize_mat");
 
     if (rbn_aut) rbn_aut->link_on_mouse_release([&cube](sf::Event event){ 
         cube.set_mode(OpenGLCube::CubeMode::AUTO); 
@@ -58,17 +64,24 @@ int main() {
     });
 
     ////// Main loop ////////////////////////////////////////////////////////////
-    while (cube.is_running() && window_gui.isOpen()) {
-        gui.manage_events();
+    while (cube.is_running() && window_status.isOpen() && window_input.isOpen() && window_cube.isOpen()) {
+        gui_status.manage_events();
+        gui_input.manage_events();
         cube.handle_events();
+
         if (visualize_mat) {
             visualize_mat->set_mat_values(cube.get_model());
         }
 
-        window_gui.setActive();
-        window_gui.clear(sf::Color::Black);
-        gui.draw();
-        window_gui.display();
+        window_status.setActive();
+        window_status.clear(sf::Color::Black);
+        gui_status.draw();
+        window_status.display();
+
+        window_input.setActive();
+        window_input.clear(sf::Color::Black);
+        gui_input.draw();
+        window_input.display();
 
         window_cube.setActive();
         cube.update();

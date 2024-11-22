@@ -2,7 +2,8 @@
 
 void ManagerImpl::_on_init() {
     // pre-creation operations, custom prototypes must be added here before parsing the GUI file
-    nd::Widget::add_prototype("CUSTOM_WIDGET", new CustomWidget());
+    nd::Widget::add_prototype("CUBE_STATUS", new CubeStatus());
+    nd::Widget::add_prototype("MATRIX_INPUT", new MatrixInput());
 }
 
 void ManagerImpl::_on_create() {

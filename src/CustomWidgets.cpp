@@ -40,9 +40,13 @@ void CustomWidget::build() {
     __text_iy.set_font_size(__font_size); __text_jy.set_font_size(__font_size); __text_ky.set_font_size(__font_size);
     __text_iz.set_font_size(__font_size); __text_jz.set_font_size(__font_size); __text_kz.set_font_size(__font_size);
 
-    __text_ix.set_bg_color(sf::Color(0x330000FF)); __text_jx.set_bg_color(sf::Color(0x003300FF)); __text_kx.set_bg_color(sf::Color(0x000033FF));
-    __text_iy.set_bg_color(sf::Color(0x660000FF)); __text_jy.set_bg_color(sf::Color(0x006600FF)); __text_ky.set_bg_color(sf::Color(0x000066FF));
-    __text_iz.set_bg_color(sf::Color(0x990000FF)); __text_jz.set_bg_color(sf::Color(0x009900FF)); __text_kz.set_bg_color(sf::Color(0x000099FF));
+    __text_ix.set_bg_color(sf::Color(0x310000FF)); __text_jx.set_bg_color(sf::Color(0x003100FF)); __text_kx.set_bg_color(sf::Color(0x000031FF));
+    __text_iy.set_bg_color(sf::Color(0x390000FF)); __text_jy.set_bg_color(sf::Color(0x003900FF)); __text_ky.set_bg_color(sf::Color(0x000039FF));
+    __text_iz.set_bg_color(sf::Color(0x310000FF)); __text_jz.set_bg_color(sf::Color(0x003100FF)); __text_kz.set_bg_color(sf::Color(0x000031FF));
+
+    __text_ix.set_font_color(sf::Color(0xFF0000FF)); __text_jx.set_font_color(sf::Color(0xFF0000FF)); __text_kx.set_font_color(sf::Color(0xFF0000FF));
+    __text_iy.set_font_color(sf::Color(0x00FF00FF)); __text_jy.set_font_color(sf::Color(0x00FF00FF)); __text_ky.set_font_color(sf::Color(0x00FF00FF));
+    __text_iz.set_font_color(sf::Color(0x0000FFFF)); __text_jz.set_font_color(sf::Color(0x0000FFFF)); __text_kz.set_font_color(sf::Color(0x0000FFFF));
 
     __text_ix.build(); __text_jx.build(); __text_kx.build();
     __text_iy.build(); __text_jy.build(); __text_ky.build();
@@ -55,4 +59,14 @@ void CustomWidget::draw(sf::RenderWindow& window) {
     __text_iy.draw(window); __text_jy.draw(window); __text_ky.draw(window);
     __text_iz.draw(window); __text_jz.draw(window); __text_kz.draw(window);
 
+}
+
+void CustomWidget::set_mat_values(glm::mat4 mat) {
+    __text_ix.set_text_str(std::to_string(mat[0][0])); __text_jx.set_text_str(std::to_string(mat[1][0])); __text_kx.set_text_str(std::to_string(mat[2][0]));
+    __text_iy.set_text_str(std::to_string(mat[0][1])); __text_jy.set_text_str(std::to_string(mat[1][1])); __text_ky.set_text_str(std::to_string(mat[2][1]));
+    __text_iz.set_text_str(std::to_string(mat[0][2])); __text_jz.set_text_str(std::to_string(mat[1][2])); __text_kz.set_text_str(std::to_string(mat[2][2]));
+
+    __text_ix.build(); __text_jx.build(); __text_kx.build();
+    __text_iy.build(); __text_jy.build(); __text_ky.build();
+    __text_iz.build(); __text_jz.build(); __text_kz.build();
 }

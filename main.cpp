@@ -19,7 +19,7 @@ int main() {
     settings.attributeFlags = sf::ContextSettings::Core;
 
     sf::RenderWindow window_gui(sf::VideoMode(800, 600), "Cube Status", sf::Style::Close);
-    sf::Window window_cube(sf::VideoMode(800, 600), "OpenGL Cube", sf::Style::Close, settings);
+    sf::Window window_cube(sf::VideoMode(600, 600), "OpenGL Cube", sf::Style::Close, settings);
     window_gui.setPosition(sf::Vector2i(0, 0));
     window_cube.setPosition(sf::Vector2i(800, 0));
 
@@ -36,6 +36,7 @@ int main() {
     nd::Widget* rbn_man = gui.get_widget("rbn_man");
     nd::Widget* rbn_mat = gui.get_widget("rbn_mat");
     nd::Widget* btn_reset = gui.get_widget("btt_reset");
+    CustomWidget* visualize_mat = (CustomWidget*)gui.get_widget("visualize_mat");
 
     if (rbn_aut) rbn_aut->link_on_mouse_release([&cube](sf::Event event){ 
         cube.set_mode(OpenGLCube::CubeMode::AUTO); 
@@ -58,14 +59,18 @@ int main() {
 
     ////// Main loop ////////////////////////////////////////////////////////////
     while (cube.is_running() && window_gui.isOpen()) {
-        window_gui.setActive();
         gui.manage_events();
+        cube.handle_events();
+        if (visualize_mat) {
+            visualize_mat->set_mat_values(cube.get_model());
+        }
+
+        window_gui.setActive();
         window_gui.clear(sf::Color::Black);
         gui.draw();
         window_gui.display();
 
         window_cube.setActive();
-        cube.handle_events();
         cube.update();
         window_cube.display();
     }

@@ -182,7 +182,7 @@ void OpenGLCube::update() {
     glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
 
     // PERSPECTIVE PROJECTION TRANSFORMATION
-    proj = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 1.0f, 10.0f);
+    proj = glm::perspective(glm::radians(45.0f), ratio_perspective, 1.0f, 10.0f);
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 
     // DRAW AND DISPLAY

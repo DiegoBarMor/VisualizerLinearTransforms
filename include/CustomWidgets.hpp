@@ -1,4 +1,5 @@
 #pragma once
+#include <glm/glm.hpp>
 #include "../andgui/include/widgets/Texts.hpp"
 
 class CustomWidget : public nd::Widget {
@@ -11,6 +12,8 @@ public:
     void draw(sf::RenderWindow& window) override;
     
     void set_font_size(unsigned int size) { __font_size = size; }
+
+    void set_mat_values(glm::mat4 mat);
 
 private:
     nd::Text 

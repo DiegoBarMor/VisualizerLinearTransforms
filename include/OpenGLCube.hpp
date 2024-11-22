@@ -19,6 +19,7 @@ public:
     bool is_running() { return running; }
     void set_mode(CubeMode mode) { this->mode = mode; }
     sf::Window &get_window() { return window; }
+    glm::mat4 get_model() { return model; }
     void reset() { anglex = angley = anglez = 0.0f; }
 
 private:
@@ -32,21 +33,21 @@ private:
     float vertices[128] = { // better square (glDrawElements)
         //  X     Y     Z      R     G     B     S     T    Position - Color - Texcoords
             -.5f, -.5f, -.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, // black    0
-             .5f, -.5f, -.5f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, // blue     0
-             .5f,  .5f, -.5f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, // cyan     0
+             .5f, -.5f, -.5f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, // blue     0
+             .5f,  .5f, -.5f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, // cyan     0
             -.5f,  .5f, -.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // green    0
-            -.5f, -.5f,  .5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // red      0
+            -.5f, -.5f,  .5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // red      0
              .5f, -.5f,  .5f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, // magenta  0
              .5f,  .5f,  .5f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, // white    0
-            -.5f,  .5f,  .5f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, // yellow   0
-            -.5f,  .5f,  .5f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f, // yellow   1
+            -.5f,  .5f,  .5f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, // yellow   0
+            -.5f,  .5f,  .5f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, // yellow   1
             -.5f,  .5f, -.5f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, // green    1
             -.5f, -.5f, -.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, // black    1
              .5f,  .5f,  .5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, // white    1
-             .5f, -.5f, -.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, // blue     1
+             .5f, -.5f, -.5f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, // blue     1
              .5f, -.5f,  .5f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, // magenta  1
-             .5f, -.5f, -.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // blue     1
-            -.5f,  .5f,  .5f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, // yellow   1
+             .5f, -.5f, -.5f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // blue     1
+            -.5f,  .5f,  .5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, // yellow   1
     };
 
     GLuint elements[36] = {
@@ -76,6 +77,9 @@ private:
     float dx = 0.0f, dy = 0.0f, dz = 0.0f;
     float anglex = 0.0f, angley = 0.0f, anglez = 0.0f;
     float delta_angle = 0.01f;
+    float ratio_perspective = 1.0f;
+    // float ratio_perspective = 800.0f / 600.0f;
+    
 
     // VERTEX SHADER. mandatory output: final vertex position in device coordinates and any data the fragment shader requires
     const char* vertexSource = R"glsl(
@@ -113,7 +117,6 @@ private:
 
         void main()
         {
-            outColor = vec4(Color, 1.0);
             outColor = texture(texCats, Texcoord) * vec4(Color, 1.0);
         }
     )glsl";

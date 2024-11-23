@@ -22,9 +22,12 @@ public:
     glm::mat4   get_model()  { return model;   }
     
     void reset_model() { model = glm::mat4(1.0f); }
+    void reset_zoom()  { proj_angle = 45.0f; }
     void start_animation(glm::mat4 end_model);
 
 private:
+    enum class ZoomState { IN, OUT, NONE } zoom_state = ZoomState::NONE;
+
     void init_vertex_input();
     void init_shaders();
     void init_texture();
@@ -85,6 +88,8 @@ private:
     unsigned int animation_counter = 0;
     const unsigned int animation_frames = 240;
     
+    float proj_angle = 45.0f;
+
     // VERTEX SHADER. mandatory output: final vertex position in device coordinates and any data the fragment shader requires
     const char* vertexSource = R"glsl(
         #version 150 core

@@ -48,18 +48,23 @@ int main() {
     nd::Widget* rbn_aut = gui_panel.get_widget("rbn_aut");
     nd::Widget* rbn_key = gui_panel.get_widget("rbn_key");
     nd::Widget* rbn_mat = gui_panel.get_widget("rbn_mat");
-    nd::RadioButton* btt_reset = (nd::RadioButton*) gui_panel.get_widget("btt_reset");
+    nd::RadioButton* btt_reset_model = (nd::RadioButton*) gui_panel.get_widget("btt_reset_model");
+    nd::RadioButton* btt_reset_zoom = (nd::RadioButton*) gui_panel.get_widget("btt_reset_zoom");
     nd::RadioButton* btt_go = (nd::RadioButton*) gui_panel.get_widget("btt_go");
     nd::RadioButton* btt_clear = (nd::RadioButton*) gui_panel.get_widget("btt_clear");
     CubeStatus* visualize_mat = (CubeStatus*)gui_status.get_widget("visualize_mat");
     MatrixInput* input_mat = (MatrixInput*)gui_input.get_widget("input_mat");
 
-    if (rbn_aut == nullptr || rbn_key == nullptr || rbn_mat == nullptr || btt_reset == nullptr || btt_go == nullptr || btt_clear == nullptr) {
-        std::cerr << "Control panel widget not found. Aborting." << std::endl;
+    if (
+        rbn_aut == nullptr || rbn_key == nullptr || rbn_mat == nullptr || 
+        btt_reset_model == nullptr || btt_reset_zoom == nullptr ||
+        btt_go == nullptr || btt_clear == nullptr
+    ) {
+        std::cerr << "A control panel widget was not found. Aborting." << std::endl;
         return 1;
     }
     if (visualize_mat == nullptr || input_mat == nullptr) {
-        std::cerr << "Matrix widget not found. Aborting." << std::endl;
+        std::cerr << "A matrix widget not found. Aborting." << std::endl;
         return 1;
     }
 
@@ -83,8 +88,13 @@ int main() {
         return true;
     });
     
-    btt_reset->link_on_mouse_release([&cube](sf::Event event){ 
+    btt_reset_model->link_on_mouse_release([&cube](sf::Event event){ 
         cube.reset_model();
+        cube.get_window().requestFocus();
+        return true;
+    });
+    btt_reset_zoom->link_on_mouse_release([&cube](sf::Event event){ 
+        cube.reset_zoom();
         cube.get_window().requestFocus();
         return true;
     });

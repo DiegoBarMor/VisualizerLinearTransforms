@@ -136,6 +136,12 @@ void OpenGLCube::handle_events() {
                 dy = delta_angle; break;
             case sf::Keyboard::Numpad9:
                 dx = delta_angle; break;
+            case 55:
+            case sf::Keyboard::Add:
+                zoom_state = ZoomState::IN; break;
+            case sf::Keyboard::Hyphen:
+            case sf::Keyboard::Subtract:
+                zoom_state = ZoomState::OUT; break;
             } break;
             
         case sf::Event::KeyReleased:
@@ -152,6 +158,11 @@ void OpenGLCube::handle_events() {
                 dy = 0.0f; break;
             case sf::Keyboard::Numpad9:
                 dx = 0.0f; break;
+            case 55:
+            case sf::Keyboard::Add:
+            case sf::Keyboard::Hyphen:
+            case sf::Keyboard::Subtract:
+                zoom_state = ZoomState::NONE; break;
             } break;
         }
     }
@@ -187,7 +198,13 @@ void OpenGLCube::update() {
     glUniformMatrix4fv(uniView, 1, GL_FALSE, glm::value_ptr(view));
 
     // PERSPECTIVE PROJECTION TRANSFORMATION
-    proj = glm::perspective(glm::radians(45.0f), ratio_perspective, 1.0f, 10.0f);
+    if (zoom_state == ZoomState::IN && proj_angle >= 0.0f) {
+        proj_angle -= delta_angle * 10.0f;
+    }
+    else if (zoom_state == ZoomState::OUT && proj_angle <= 180.0f) {
+        proj_angle += delta_angle * 10.0f;
+    }
+    proj = glm::perspective(glm::radians(proj_angle), ratio_perspective, 1.0f, 10.0f);
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 
     // DRAW AND DISPLAY
@@ -195,7 +212,8 @@ void OpenGLCube::update() {
 }
 
 void OpenGLCube::start_animation(glm::mat4 end_model) {
-    animation_delta = (end_model - model) / (float)animation_frames; // [WIP]
+    end_model = model * end_model;
+    animation_delta = (end_model - model) / (float)animation_frames;
     animation_counter = 0;
     animation_running = true;
 }

@@ -16,11 +16,13 @@ public:
     void handle_events();
     void update();
 
-    bool is_running() { return running; }
     void set_mode(CubeMode mode) { this->mode = mode; }
-    sf::Window &get_window() { return window; }
-    glm::mat4 get_model() { return model; }
+    bool        is_running() { return running; }
+    sf::Window& get_window() { return window;  }
+    glm::mat4   get_model()  { return model;   }
+    
     void reset_model() { model = glm::mat4(1.0f); }
+    void start_animation(glm::mat4 end_model);
 
 private:
     void init_vertex_input();
@@ -77,8 +79,11 @@ private:
     float dx = 0.0f, dy = 0.0f, dz = 0.0f;
     float delta_angle = 0.01f;
     float ratio_perspective;
-    unsigned int animation_frames = 240;
+
+    glm::mat4 animation_delta;
+    bool animation_running = false;
     unsigned int animation_counter = 0;
+    const unsigned int animation_frames = 240;
     
     // VERTEX SHADER. mandatory output: final vertex position in device coordinates and any data the fragment shader requires
     const char* vertexSource = R"glsl(

@@ -74,9 +74,9 @@ void MatrixInput::build() {
     nd::TextInput* text_iy = (nd::TextInput*)_cells[3]; nd::TextInput* text_jy = (nd::TextInput*)_cells[4]; nd::TextInput* text_ky = (nd::TextInput*)_cells[5];
     nd::TextInput* text_iz = (nd::TextInput*)_cells[6]; nd::TextInput* text_jz = (nd::TextInput*)_cells[7]; nd::TextInput* text_kz = (nd::TextInput*)_cells[8];
 
-    text_ix->set_hint_str("1.0"); text_jx->set_hint_str("0.0"); text_kx->set_hint_str("1.0");
+    text_ix->set_hint_str("1.0"); text_jx->set_hint_str("0.0"); text_kx->set_hint_str("0.0");
     text_iy->set_hint_str("0.0"); text_jy->set_hint_str("1.0"); text_ky->set_hint_str("0.0");
-    text_iz->set_hint_str("0.0"); text_jz->set_hint_str("0.0"); text_kz->set_hint_str("0.0");
+    text_iz->set_hint_str("0.0"); text_jz->set_hint_str("0.0"); text_kz->set_hint_str("1.0");
 
     text_ix->set_font_color(sf::Color(0x770000FF)); text_jx->set_font_color(sf::Color(0x770000FF)); text_kx->set_font_color(sf::Color(0x770000FF));
     text_iy->set_font_color(sf::Color(0x007700FF)); text_jy->set_font_color(sf::Color(0x007700FF)); text_ky->set_font_color(sf::Color(0x007700FF));
@@ -90,6 +90,26 @@ bool MatrixInput::handle_event(sf::Event event) {
         if (cell->handle_event(event)) return true;
     }
     return MatrixGadget::handle_event(event);
+}
+
+glm::mat4 MatrixInput::get_mat_values() {
+    glm::mat3 matrix;
+    std::string value;
+    nd::TextInput* cell;
+    for (int i = 0; i < 9; i++) {
+        cell = (nd::TextInput*)_cells[i];
+        value = cell->get_text_str();
+        if (value.empty()) value = cell->get_hint_str();
+        matrix[i % 3][i / 3] = nd::parse_float_string(value);
+    }
+    return glm::mat4(matrix);
+}
+
+void MatrixInput::clear() {
+    for (auto cell : _cells) {
+        cell->set_text_str("");
+        cell->build();
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

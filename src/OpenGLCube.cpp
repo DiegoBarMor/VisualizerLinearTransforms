@@ -170,8 +170,11 @@ void OpenGLCube::update() {
         model = glm::rotate(model, dy, yPivot);
         model = glm::rotate(model, dz, zPivot);
     }
-    else if (mode == CubeMode::MATRIX) {
-
+    else if (mode == CubeMode::MATRIX && animation_running) {
+        model = model + animation_delta;
+        animation_counter++;
+        if (animation_counter == animation_frames)
+            animation_running = false;
     }
     glUniformMatrix4fv(uniTrans, 1, GL_FALSE, glm::value_ptr(model));
 
@@ -189,4 +192,10 @@ void OpenGLCube::update() {
 
     // DRAW AND DISPLAY
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+}
+
+void OpenGLCube::start_animation(glm::mat4 end_model) {
+    animation_delta = (end_model - model) / (float)animation_frames; // [WIP]
+    animation_counter = 0;
+    animation_running = true;
 }

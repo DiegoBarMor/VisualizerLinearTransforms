@@ -26,7 +26,7 @@ void ManagerImpl::_on_create() {
 }
 
 void ManagerImpl::draw_impl() {
-    sf::RenderWindow &window = (sf::RenderWindow&)get_window();
+    sf::RenderWindow &window = get_window();
     window.setActive();
     window.clear(sf::Color::Black);
     this->draw();

@@ -46,32 +46,55 @@ int main() {
 
     ////// Link callbacks ///////////////////////////////////////////////////////
     nd::Widget* rbn_aut = gui_panel.get_widget("rbn_aut");
-    nd::Widget* rbn_man = gui_panel.get_widget("rbn_man");
+    nd::Widget* rbn_key = gui_panel.get_widget("rbn_key");
     nd::Widget* rbn_mat = gui_panel.get_widget("rbn_mat");
-    nd::Widget* btn_reset = gui_panel.get_widget("btt_reset");
+    nd::RadioButton* btt_reset = (nd::RadioButton*) gui_panel.get_widget("btt_reset");
+    nd::RadioButton* btt_go = (nd::RadioButton*) gui_panel.get_widget("btt_go");
+    nd::RadioButton* btt_clear = (nd::RadioButton*) gui_panel.get_widget("btt_clear");
     CubeStatus* visualize_mat = (CubeStatus*)gui_status.get_widget("visualize_mat");
+    MatrixInput* input_mat = (MatrixInput*)gui_input.get_widget("input_mat");
 
-    if (visualize_mat == nullptr) {
-        std::cerr << "Widget 'visualize_mat' not found. Aborting." << std::endl;
+    if (rbn_aut == nullptr || rbn_key == nullptr || rbn_mat == nullptr || btt_reset == nullptr || btt_go == nullptr || btt_clear == nullptr) {
+        std::cerr << "Control panel widget not found. Aborting." << std::endl;
+        return 1;
+    }
+    if (visualize_mat == nullptr || input_mat == nullptr) {
+        std::cerr << "Matrix widget not found. Aborting." << std::endl;
         return 1;
     }
 
-    if (rbn_aut) rbn_aut->link_on_mouse_release([&cube](sf::Event event){ 
+    rbn_aut->link_on_mouse_release([&cube,btt_go,btt_clear](sf::Event event){ 
         cube.set_mode(OpenGLCube::CubeMode::AUTO); 
+        btt_go->set_enabled(false);
+        btt_clear->set_enabled(false);
         return true;
     });
-    if (rbn_man) rbn_man->link_on_mouse_release([&cube](sf::Event event){ 
+    rbn_key->link_on_mouse_release([&cube,btt_go,btt_clear](sf::Event event){ 
         cube.set_mode(OpenGLCube::CubeMode::MANUAL); 
         cube.get_window().requestFocus();
+        btt_go->set_enabled(false);
+        btt_clear->set_enabled(false);
         return true;
     });
-    if (rbn_mat) rbn_mat->link_on_mouse_release([&cube](sf::Event event){ 
-        cube.set_mode(OpenGLCube::CubeMode::MATRIX); 
+    rbn_mat->link_on_mouse_release([&cube,btt_go,btt_clear](sf::Event event){ 
+        cube.set_mode(OpenGLCube::CubeMode::MATRIX);
+        btt_go->set_enabled(true);
+        btt_clear->set_enabled(true);
         return true;
     });
-    if (btn_reset) btn_reset->link_on_mouse_release([&cube](sf::Event event){ 
+    
+    btt_reset->link_on_mouse_release([&cube](sf::Event event){ 
         cube.reset_model();
         cube.get_window().requestFocus();
+        return true;
+    });
+    btt_go->link_on_mouse_release([&cube,&input_mat](sf::Event event){ 
+        cube.start_animation(input_mat->get_mat_values());
+        cube.get_window().requestFocus();
+        return true;
+    });
+    btt_clear->link_on_mouse_release([&input_mat](sf::Event event){ 
+        input_mat->clear();
         return true;
     });
 

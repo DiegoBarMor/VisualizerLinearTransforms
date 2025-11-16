@@ -119,45 +119,60 @@ void OpenGLCube::handle_events() {
         switch (event.type) {
         case sf::Event::Closed:
             running = false; break;
-            
+
         case sf::Event::KeyPressed:
+            // printf("Key pressed: %d\n", event.key.code);
             switch (event.key.code) {
             case sf::Keyboard::Escape:
                 running = false; break;
             case sf::Keyboard::Numpad2:
+            case sf::Keyboard::S:
                 dy = -delta_angle; break;
             case sf::Keyboard::Numpad4:
-                dz = -delta_angle; break; 
+            case sf::Keyboard::A:
+                dz = -delta_angle; break;
             case sf::Keyboard::Numpad6:
+            case sf::Keyboard::D:
                 dz = delta_angle; break;
             case sf::Keyboard::Numpad7:
+            case sf::Keyboard::Q:
                 dx = -delta_angle; break;
             case sf::Keyboard::Numpad8:
+            case sf::Keyboard::W:
                 dy = delta_angle; break;
             case sf::Keyboard::Numpad9:
+            case sf::Keyboard::E:
                 dx = delta_angle; break;
             case 55:
+            case 47: // tested on Ubuntu
             case sf::Keyboard::Add:
                 zoom_state = ZoomState::IN; break;
-            case sf::Keyboard::Hyphen:
+            case sf::Keyboard::Hyphen: // 56
             case sf::Keyboard::Subtract:
                 zoom_state = ZoomState::OUT; break;
             } break;
-            
+
         case sf::Event::KeyReleased:
             switch (event.key.code) {
             case sf::Keyboard::Numpad2:
+            case sf::Keyboard::S:
                 dy = 0.0f; break;
             case sf::Keyboard::Numpad4:
+            case sf::Keyboard::A:
                 dz = 0.0f; break;
             case sf::Keyboard::Numpad6:
+            case sf::Keyboard::D:
                 dz = 0.0f; break;
             case sf::Keyboard::Numpad7:
+            case sf::Keyboard::Q:
                 dx = 0.0f; break;
             case sf::Keyboard::Numpad8:
+            case sf::Keyboard::W:
                 dy = 0.0f; break;
             case sf::Keyboard::Numpad9:
+            case sf::Keyboard::E:
                 dx = 0.0f; break;
+            case 47:
             case 55:
             case sf::Keyboard::Add:
             case sf::Keyboard::Hyphen:
@@ -175,7 +190,7 @@ void OpenGLCube::update() {
     // MODEL TRANSFORMATION
     if (mode == CubeMode::AUTO) {
         model = glm::rotate(model, delta_angle, zPivot);
-    } 
+    }
     else if (mode == CubeMode::MANUAL) {
         model = glm::rotate(model, dx, xPivot);
         model = glm::rotate(model, dy, yPivot);
@@ -204,7 +219,7 @@ void OpenGLCube::update() {
     else if (zoom_state == ZoomState::OUT && proj_angle <= 180.0f) {
         proj_angle += delta_angle * 10.0f;
     }
-    proj = glm::perspective(glm::radians(proj_angle), ratio_perspective, 1.0f, 10.0f);
+    proj = glm::perspective(glm::radians(proj_angle), ratio_perspective, 0.001f, 10.0f);
     glUniformMatrix4fv(uniProj, 1, GL_FALSE, glm::value_ptr(proj));
 
     // DRAW AND DISPLAY

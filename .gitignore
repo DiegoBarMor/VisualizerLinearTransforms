@@ -5,5 +5,7 @@ desktop.ini
 *.sln
 .vs/
 .vscode/
+
+build/
 x64/
 andgui/

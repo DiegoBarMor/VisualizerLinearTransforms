@@ -1,17 +1,17 @@
-#include "../include/ManagerImpl.hpp"
+#include "../include/AppVLT.hpp"
 
-void ManagerImpl::_on_init() {
+void AppVLT::_on_init() {
     nd::Widget::add_prototype("CUBE_STATUS", new CubeStatus());
     nd::Widget::add_prototype("MATRIX_INPUT", new MatrixInput());
 }
 
-void ManagerImpl::_on_create() {
+void AppVLT::_on_create() {
     nd::Widget* root = get_widget("root");
     if (root == nullptr) {
         std::cerr << "Root widget not found" << std::endl;
         return;
     }
-    
+
     root->link_on_window_closed([this](sf::Event event) {
         this->get_window().close();
         return true;
@@ -25,7 +25,7 @@ void ManagerImpl::_on_create() {
     });
 }
 
-void ManagerImpl::draw_impl() {
+void AppVLT::draw_impl() {
     sf::RenderWindow &window = get_window();
     window.setActive();
     window.clear(sf::Color::Black);

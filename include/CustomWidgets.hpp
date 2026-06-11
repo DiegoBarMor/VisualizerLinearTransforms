@@ -1,6 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
-#include "../andgui/include/widgets/Texts.hpp"
+#include "../almond/widgets/Texts.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -8,11 +8,11 @@ class MatrixGadget : public nd::Widget {
 public:
     ~MatrixGadget() { for (auto cell : _cells) delete cell; }
     MatrixGadget* clone() override { return new MatrixGadget(); }
-    
+
     bool set_spec(std::string key, std::string raw_value) override;
     void build() override;
     void draw(sf::RenderWindow& window) override;
-    
+
     void set_font_size(unsigned int size) { _font_size = size; }
 
 

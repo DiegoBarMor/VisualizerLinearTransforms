@@ -6,7 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp> // to ease the calculation of the view and projection matrices
 #include <glm/gtc/type_ptr.hpp> // for converting a matrix object into a float array for usage in OpenGL
 
-#include "include/ManagerImpl.hpp"
+#include "include/AppVLT.hpp"
 #include "include/OpenGLCube.hpp"
 
 int main() {
@@ -22,7 +22,7 @@ int main() {
     sf::RenderWindow window_input(sf::VideoMode(700, 450), "Matrix Input", sf::Style::Close);
     sf::RenderWindow window_panel(sf::VideoMode(600, 300), "Control Panel", sf::Style::Close);
     sf::Window window_cube(sf::VideoMode(600, 600), "OpenGL Cube", sf::Style::Close, settings);
-    
+
     window_status.setPosition(sf::Vector2i(0, 0));
     window_input.setPosition(sf::Vector2i(0, 490));
     window_panel.setPosition(sf::Vector2i(700, 640));
@@ -33,13 +33,13 @@ int main() {
     window_panel.setFramerateLimit(120);
     window_cube.setFramerateLimit(120);
 
-    ManagerImpl gui_status = ManagerImpl(window_status);
+    AppVLT gui_status = AppVLT(window_status);
     gui_status.setup("assets/cube_status.ndg");
 
-    ManagerImpl gui_input = ManagerImpl(window_input);
+    AppVLT gui_input = AppVLT(window_input);
     gui_input.setup("assets/matrix_input.ndg");
 
-    ManagerImpl gui_panel = ManagerImpl(window_panel);
+    AppVLT gui_panel = AppVLT(window_panel);
     gui_panel.setup("assets/control_panel.ndg");
 
     OpenGLCube cube = OpenGLCube(window_cube);
@@ -56,7 +56,7 @@ int main() {
     MatrixInput* input_mat = (MatrixInput*)gui_input.get_widget("input_mat");
 
     if (
-        rbn_aut == nullptr || rbn_key == nullptr || rbn_mat == nullptr || 
+        rbn_aut == nullptr || rbn_key == nullptr || rbn_mat == nullptr ||
         btt_reset_model == nullptr || btt_reset_zoom == nullptr ||
         btt_go == nullptr || btt_clear == nullptr
     ) {
@@ -68,42 +68,42 @@ int main() {
         return 1;
     }
 
-    rbn_aut->link_on_mouse_release([&cube,btt_go,btt_clear](sf::Event event){ 
-        cube.set_mode(OpenGLCube::CubeMode::AUTO); 
+    rbn_aut->link_on_mouse_release([&cube,btt_go,btt_clear](sf::Event event){
+        cube.set_mode(OpenGLCube::CubeMode::AUTO);
         btt_go->set_enabled(false);
         btt_clear->set_enabled(false);
         return true;
     });
-    rbn_key->link_on_mouse_release([&cube,btt_go,btt_clear](sf::Event event){ 
-        cube.set_mode(OpenGLCube::CubeMode::MANUAL); 
+    rbn_key->link_on_mouse_release([&cube,btt_go,btt_clear](sf::Event event){
+        cube.set_mode(OpenGLCube::CubeMode::MANUAL);
         cube.get_window().requestFocus();
         btt_go->set_enabled(false);
         btt_clear->set_enabled(false);
         return true;
     });
-    rbn_mat->link_on_mouse_release([&cube,btt_go,btt_clear](sf::Event event){ 
+    rbn_mat->link_on_mouse_release([&cube,btt_go,btt_clear](sf::Event event){
         cube.set_mode(OpenGLCube::CubeMode::MATRIX);
         btt_go->set_enabled(true);
         btt_clear->set_enabled(true);
         return true;
     });
-    
-    btt_reset_model->link_on_mouse_release([&cube](sf::Event event){ 
+
+    btt_reset_model->link_on_mouse_release([&cube](sf::Event event){
         cube.reset_model();
         cube.get_window().requestFocus();
         return true;
     });
-    btt_reset_zoom->link_on_mouse_release([&cube](sf::Event event){ 
+    btt_reset_zoom->link_on_mouse_release([&cube](sf::Event event){
         cube.reset_zoom();
         cube.get_window().requestFocus();
         return true;
     });
-    btt_go->link_on_mouse_release([&cube,&input_mat](sf::Event event){ 
+    btt_go->link_on_mouse_release([&cube,&input_mat](sf::Event event){
         cube.start_animation(input_mat->get_mat_values());
         cube.get_window().requestFocus();
         return true;
     });
-    btt_clear->link_on_mouse_release([&input_mat](sf::Event event){ 
+    btt_clear->link_on_mouse_release([&input_mat](sf::Event event){
         input_mat->clear();
         return true;
     });
@@ -116,7 +116,7 @@ int main() {
         cube.handle_events();
 
         visualize_mat->set_mat_values(cube.get_model());
-       
+
         gui_status.draw_impl();
         gui_input.draw_impl();
         gui_panel.draw_impl();

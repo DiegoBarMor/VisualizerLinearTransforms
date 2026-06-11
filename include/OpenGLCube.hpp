@@ -20,7 +20,7 @@ public:
     bool        is_running() { return running; }
     sf::Window& get_window() { return window;  }
     glm::mat4   get_model()  { return model;   }
-    
+
     void reset_model() { model = glm::mat4(1.0f); }
     void reset_zoom()  { proj_angle = 45.0f; }
     void start_animation(glm::mat4 end_model);
@@ -70,7 +70,7 @@ private:
     GLint posAttrib, colAttrib, texAttrib;
     sf::Image image;
 
-    glm::vec3 
+    glm::vec3
         xPivot = glm::vec3(1.0f, 0.0f, 0.0f),
         yPivot = glm::vec3(0.0f, 1.0f, 0.0f),
         zPivot = glm::vec3(0.0f, 0.0f, 1.0f);
@@ -87,7 +87,7 @@ private:
     bool animation_running = false;
     unsigned int animation_counter = 0;
     const unsigned int animation_frames = 240;
-    
+
     float proj_angle = 45.0f;
 
     // VERTEX SHADER. mandatory output: final vertex position in device coordinates and any data the fragment shader requires

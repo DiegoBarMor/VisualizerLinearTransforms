@@ -13,8 +13,8 @@ FetchContent_Declare(SFML
 FetchContent_MakeAvailable(SFML)
 
 file(GLOB_RECURSE APP_SRC_FILES
+    ${CMAKE_SOURCE_DIR}/almond/*.cpp
     ${CMAKE_SOURCE_DIR}/src/*.cpp
-    ${CMAKE_SOURCE_DIR}/andgui/src/*.cpp
 )
 list(APPEND APP_SRC_FILES ${CMAKE_SOURCE_DIR}/main.cpp)
 
@@ -23,8 +23,8 @@ add_executable(VisualizerLinearTransforms ${APP_SRC_FILES})
 target_compile_features(VisualizerLinearTransforms PRIVATE cxx_std_17)
 
 target_include_directories(VisualizerLinearTransforms PRIVATE
+    ${CMAKE_SOURCE_DIR}/almond
     ${CMAKE_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/andgui/include
 )
 
 find_package(OpenGL REQUIRED)

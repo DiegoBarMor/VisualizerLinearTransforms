@@ -1,11 +1,6 @@
 desktop.ini
-.editorconfig
-
-*.vcxproj*
-*.sln
-.vs/
+**__pycache__**
 .vscode/
 
+almond/
 build/
-x64/
-andgui/

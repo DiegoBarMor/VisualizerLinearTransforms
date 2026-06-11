@@ -81,7 +81,7 @@ void MatrixInput::build() {
     text_ix->set_font_color(sf::Color(0x770000FF)); text_jx->set_font_color(sf::Color(0x770000FF)); text_kx->set_font_color(sf::Color(0x770000FF));
     text_iy->set_font_color(sf::Color(0x007700FF)); text_jy->set_font_color(sf::Color(0x007700FF)); text_ky->set_font_color(sf::Color(0x007700FF));
     text_iz->set_font_color(sf::Color(0x000077FF)); text_jz->set_font_color(sf::Color(0x000077FF)); text_kz->set_font_color(sf::Color(0x000077FF));
-    
+
     MatrixGadget::build();
 }
 

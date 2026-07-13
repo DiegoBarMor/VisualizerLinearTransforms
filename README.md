@@ -4,8 +4,11 @@ This is a simple program for visualizing how a 3x3 matrix can transform a 3D spa
 ![Logo](docs/logo.gif)
 ![Example](docs/example.gif)
 
-## Dependencies
-(TODO: check this)
+## Quickstart
+Depends on GLEW/GLM (OpenGL) and the SFML based [ALMOND GUI](https://diegobarmor.github.io/almond/) (v0.1.0).
+
 ```bash
-sudo apt install libglew-dev libglm-dev
+bash scripts/install_dependencies.sh # only the first time an ALMOND/SFML project is used
+bash scripts/build.sh
+bash scripts/run.sh
 ```

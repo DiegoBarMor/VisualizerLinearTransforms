@@ -114,71 +114,77 @@ void OpenGLCube::init_transformations() {
 }
 
 void OpenGLCube::handle_events() {
-    sf::Event event;
-    while (window.pollEvent(event)) {
-        switch (event.type) {
-        case sf::Event::Closed:
-            running = false; break;
+    while (const std::optional event = window.pollEvent()) {
+        if (event->is<sf::Event::Closed>()) {
+            running = false;
+            break;
+        }
 
-        case sf::Event::KeyPressed:
-            // printf("Key pressed: %d\n", event.key.code);
-            switch (event.key.code) {
-            case sf::Keyboard::Escape:
+        if (event->is<sf::Event::KeyPressed>()) {
+            const auto* keyPress = event->getIf<sf::Event::KeyPressed>();
+            if (!keyPress) continue;
+
+            switch (keyPress->code) {
+            case sf::Keyboard::Key::Escape:
                 running = false; break;
-            case sf::Keyboard::Numpad2:
-            case sf::Keyboard::S:
+            case sf::Keyboard::Key::Numpad2:
+            case sf::Keyboard::Key::S:
                 dy = -delta_angle; break;
-            case sf::Keyboard::Numpad4:
-            case sf::Keyboard::A:
+            case sf::Keyboard::Key::Numpad4:
+            case sf::Keyboard::Key::A:
                 dz = -delta_angle; break;
-            case sf::Keyboard::Numpad6:
-            case sf::Keyboard::D:
+            case sf::Keyboard::Key::Numpad6:
+            case sf::Keyboard::Key::D:
                 dz = delta_angle; break;
-            case sf::Keyboard::Numpad7:
-            case sf::Keyboard::Q:
+            case sf::Keyboard::Key::Numpad7:
+            case sf::Keyboard::Key::Q:
                 dx = -delta_angle; break;
-            case sf::Keyboard::Numpad8:
-            case sf::Keyboard::W:
+            case sf::Keyboard::Key::Numpad8:
+            case sf::Keyboard::Key::W:
                 dy = delta_angle; break;
-            case sf::Keyboard::Numpad9:
-            case sf::Keyboard::E:
+            case sf::Keyboard::Key::Numpad9:
+            case sf::Keyboard::Key::E:
                 dx = delta_angle; break;
-            case 55:
-            case 47: // tested on Ubuntu
-            case sf::Keyboard::Add:
+            // case 55:
+            // case 47: // tested on Ubuntu
+            case sf::Keyboard::Key::Add:
                 zoom_state = ZoomState::IN; break;
-            case sf::Keyboard::Hyphen: // 56
-            case sf::Keyboard::Subtract:
+            case sf::Keyboard::Key::Hyphen: // 56
+            case sf::Keyboard::Key::Subtract:
                 zoom_state = ZoomState::OUT; break;
-            } break;
+            }
+        }
 
-        case sf::Event::KeyReleased:
-            switch (event.key.code) {
-            case sf::Keyboard::Numpad2:
-            case sf::Keyboard::S:
+        else if (event->is<sf::Event::KeyReleased>()) {
+            const auto *keyPress = event->getIf<sf::Event::KeyReleased>();
+            if (!keyPress) continue;
+
+            switch (keyPress->code) {
+            case sf::Keyboard::Key::Numpad2:
+            case sf::Keyboard::Key::S:
                 dy = 0.0f; break;
-            case sf::Keyboard::Numpad4:
-            case sf::Keyboard::A:
+            case sf::Keyboard::Key::Numpad4:
+            case sf::Keyboard::Key::A:
                 dz = 0.0f; break;
-            case sf::Keyboard::Numpad6:
-            case sf::Keyboard::D:
+            case sf::Keyboard::Key::Numpad6:
+            case sf::Keyboard::Key::D:
                 dz = 0.0f; break;
-            case sf::Keyboard::Numpad7:
-            case sf::Keyboard::Q:
+            case sf::Keyboard::Key::Numpad7:
+            case sf::Keyboard::Key::Q:
                 dx = 0.0f; break;
-            case sf::Keyboard::Numpad8:
-            case sf::Keyboard::W:
+            case sf::Keyboard::Key::Numpad8:
+            case sf::Keyboard::Key::W:
                 dy = 0.0f; break;
-            case sf::Keyboard::Numpad9:
-            case sf::Keyboard::E:
+            case sf::Keyboard::Key::Numpad9:
+            case sf::Keyboard::Key::E:
                 dx = 0.0f; break;
-            case 47:
-            case 55:
-            case sf::Keyboard::Add:
-            case sf::Keyboard::Hyphen:
-            case sf::Keyboard::Subtract:
+            // case 47:
+            // case 55:
+            case sf::Keyboard::Key::Add:
+            case sf::Keyboard::Key::Hyphen:
+            case sf::Keyboard::Key::Subtract:
                 zoom_state = ZoomState::NONE; break;
-            } break;
+            }
         }
     }
 }

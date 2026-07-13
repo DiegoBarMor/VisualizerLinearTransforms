@@ -12,12 +12,13 @@ void AppVLT::_on_create() {
         return;
     }
 
-    root->link_on_window_closed([this](sf::Event event) {
+    root->link_on_window_closed([this](const std::optional<sf::Event> event) {
         this->get_window().close();
         return true;
     });
-    root->link_on_key_press([this](sf::Event event) {
-        if (event.key.code == sf::Keyboard::Escape) {
+    root->link_on_key_press([this](const std::optional<sf::Event> event) {
+        const auto* keyPress = event->getIf<sf::Event::KeyPressed>();
+        if (keyPress && keyPress->code == sf::Keyboard::Key::Escape) {
             this->get_window().close();
             return true;
         }

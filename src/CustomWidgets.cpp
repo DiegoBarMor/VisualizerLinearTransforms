@@ -85,7 +85,7 @@ void MatrixInput::build() {
     MatrixGadget::build();
 }
 
-bool MatrixInput::handle_event(sf::Event event) {
+bool MatrixInput::handle_event(const std::optional<sf::Event> event) {
     for (auto cell : _cells) {
         if (cell->handle_event(event)) return true;
     }

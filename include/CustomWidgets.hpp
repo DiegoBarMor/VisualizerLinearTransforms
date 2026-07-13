@@ -42,7 +42,7 @@ public:
     MatrixInput* clone() override { return new MatrixInput(); }
 
     void build() override;
-    bool handle_event(sf::Event event) override;
+    bool handle_event(const std::optional<sf::Event> event) override;
 
     glm::mat4 get_mat_values();
     void clear();

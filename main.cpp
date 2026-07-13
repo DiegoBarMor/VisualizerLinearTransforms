@@ -13,15 +13,15 @@ int main() {
     sf::ContextSettings settings;
     settings.depthBits = 24;
     settings.stencilBits = 8;
-    settings.antialiasingLevel = 2; // Optional
+    settings.antiAliasingLevel = 2; // Optional
     settings.majorVersion = 3;
     settings.minorVersion = 2;
     settings.attributeFlags = sf::ContextSettings::Core;
 
-    sf::RenderWindow window_status(sf::VideoMode(700, 450), "Cube Status", sf::Style::Close);
-    sf::RenderWindow window_input(sf::VideoMode(700, 450), "Matrix Input", sf::Style::Close);
-    sf::RenderWindow window_panel(sf::VideoMode(600, 300), "Control Panel", sf::Style::Close);
-    sf::Window window_cube(sf::VideoMode(600, 600), "OpenGL Cube", sf::Style::Close, settings);
+    sf::RenderWindow window_status(sf::VideoMode({700, 450}), "Cube Status", sf::State::Windowed);
+    sf::RenderWindow window_input(sf::VideoMode({700, 450}), "Matrix Input", sf::State::Windowed);
+    sf::RenderWindow window_panel(sf::VideoMode({600, 300}), "Control Panel", sf::State::Windowed);
+    sf::Window window_cube(sf::VideoMode({600, 600}), "OpenGL Cube", sf::State::Windowed, settings);
 
     window_status.setPosition(sf::Vector2i(0, 0));
     window_input.setPosition(sf::Vector2i(0, 490));
@@ -68,42 +68,42 @@ int main() {
         return 1;
     }
 
-    rbn_aut->link_on_mouse_release([&cube,btt_go,btt_clear](sf::Event event){
+    rbn_aut->link_on_mouse_release([&cube,btt_go,btt_clear](const std::optional<sf::Event> event){
         cube.set_mode(OpenGLCube::CubeMode::AUTO);
         btt_go->set_enabled(false);
         btt_clear->set_enabled(false);
         return true;
     });
-    rbn_key->link_on_mouse_release([&cube,btt_go,btt_clear](sf::Event event){
+    rbn_key->link_on_mouse_release([&cube,btt_go,btt_clear](const std::optional<sf::Event> event){
         cube.set_mode(OpenGLCube::CubeMode::MANUAL);
         cube.get_window().requestFocus();
         btt_go->set_enabled(false);
         btt_clear->set_enabled(false);
         return true;
     });
-    rbn_mat->link_on_mouse_release([&cube,btt_go,btt_clear](sf::Event event){
+    rbn_mat->link_on_mouse_release([&cube,btt_go,btt_clear](const std::optional<sf::Event> event){
         cube.set_mode(OpenGLCube::CubeMode::MATRIX);
         btt_go->set_enabled(true);
         btt_clear->set_enabled(true);
         return true;
     });
 
-    btt_reset_model->link_on_mouse_release([&cube](sf::Event event){
+    btt_reset_model->link_on_mouse_release([&cube](const std::optional<sf::Event> event){
         cube.reset_model();
         cube.get_window().requestFocus();
         return true;
     });
-    btt_reset_zoom->link_on_mouse_release([&cube](sf::Event event){
+    btt_reset_zoom->link_on_mouse_release([&cube](const std::optional<sf::Event> event){
         cube.reset_zoom();
         cube.get_window().requestFocus();
         return true;
     });
-    btt_go->link_on_mouse_release([&cube,&input_mat](sf::Event event){
+    btt_go->link_on_mouse_release([&cube,&input_mat](const std::optional<sf::Event> event){
         cube.start_animation(input_mat->get_mat_values());
         cube.get_window().requestFocus();
         return true;
     });
-    btt_clear->link_on_mouse_release([&input_mat](sf::Event event){
+    btt_clear->link_on_mouse_release([&input_mat](const std::optional<sf::Event> event){
         input_mat->clear();
         return true;
     });
